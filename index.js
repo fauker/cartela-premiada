@@ -8,13 +8,12 @@ const Columns = require('./utils/column.util')
 const _ = require('lodash')
 const Raffle = require('./raffle')
 const childProcess = require('child_process')
-const pTimes = require('p-times')
+const fs = require('fs')
 
 let numbers = _.range(1, 61);
 const maxNumbers = 6
 let filledColumns = []
 let emptyColumns = []
-let results = []
 
 if (lastsContests.length === 0) {
   console.log(chalk.red('Você precisa informar o número do último concurso!'))
@@ -56,13 +55,26 @@ ApiUtil.getLastEighteenOrSeventeenNumbers(lastsContests[0])
           return !filledColumns.includes(item)
         })
 
-        pTimes(5, i => Raffle.make(numbers, emptyColumns)
+        Raffle.make(numbers, emptyColumns)
           .then(numbers => {
+            numbers.sort((a, b) => a - b)
             console.log(chalk.green('Jogo final sugerido: ' + numbers))
+            fs.appendFile('results.txt', `\n${numbers}`, (err) => {
+              if (err) console.log(err)
+              console.log(chalk.green('Salvo no arquivo!'))
+            })
+            fs.readFile('results.txt', 'utf-8', (err, data) => {
+              if (err) console.log(err)
+              const firstLine = data.split('\n')[0]
+              if (firstLine < 10) {
+                fs.writeFileSync('results.txt', data.replace(firstLine, parseInt(firstLine) + 1))
+                childProcess.fork(`./index.js`, [lastsContests[0]])
+              }
+            })
           }).catch(error => {
             console.log(chalk.red(error))
             childProcess.fork(`./index.js`, [lastsContests[0]])
-          }))
+          })
 
       })
   })
