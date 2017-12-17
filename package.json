@@ -1,0 +1,23 @@
+{
+  "name": "cartela-premiada",
+  "version": "0.0.1",
+  "description": "Mostra os prováveveis números da mega sena para o próximo sorteio e também verifica se determinado jogo já foi sorteado anteriormente.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mega-sena",
+    "sorteio",
+    "cartela-premiada"
+  ],
+  "author": "Lucas Moreira",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^2.3.0",
+    "lodash": "^4.17.4",
+    "p-times": "^1.0.1",
+    "randy": "^1.5.1",
+    "request": "^2.83.0"
+  }
+}
