@@ -24,11 +24,11 @@ const columns = [Columns.first, Columns.second, Columns.third, Columns.fourth,
                 Columns.fifth, Columns.sixth, Columns.seventh, Columns.eighth,
                 Columns.ninth, Columns.tenth]
 
-ApiUtil.getLastEighteenOrSeventeenNumbers(lastsContests[0])
-  .then(lastEightNumbers => {
-    
+ApiUtil.getThreeLastContests(lastsContests[0])
+  .then(numbersOfLastThreeContests => {
+
     numbers = numbers.filter((item, index, array) => {
-      return !lastEightNumbers.includes(item)
+      return !numbersOfLastThreeContests.includes(item)
     })
 
     ApiUtil.getLastNumbers(lastsContests[0])
@@ -65,18 +65,31 @@ ApiUtil.getLastEighteenOrSeventeenNumbers(lastsContests[0])
             })
             fs.readFile('results.txt', 'utf-8', (err, data) => {
               if (err) console.log(err)
-              const firstLine = data.split('\n')[0]
-              if (firstLine < 10) {
-                fs.writeFileSync('results.txt', data.replace(firstLine, parseInt(firstLine) + 1))
+              let firstLine = data.split('\n')[0]
+              firstLine = parseInt(firstLine)
+              console.log(firstLine)
+              if (firstLine < 250000) {
+                fs.writeFileSync('results.txt', data.replace(firstLine, firstLine + 1))
                 childProcess.fork(`./index.js`, [lastsContests[0]])
+                process.exit(1)
               }
             })
           }).catch(error => {
             console.log(chalk.red(error))
             childProcess.fork(`./index.js`, [lastsContests[0]])
+            process.exit(1)
           })
 
+      }).catch(error => {
+        console.log(chalk.red(error))
+        childProcess.fork(`./index.js`, [lastsContests[0]])
+        process.exit(1)
       })
+
+  }).catch(error => {
+    console.log(chalk.red(error))
+    childProcess.fork(`./index.js`, [lastsContests[0]])
+    process.exit(1)
   })
 
 

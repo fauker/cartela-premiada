@@ -59,7 +59,7 @@ class Raffle {
         reject('3 números ou mais na mesma diagonal! Roda novamente!')
       } else if (Raffle._checkColumns(finalNumbers)) {
         console.log(chalk.red(finalNumbers))
-        reject('O jogo não está em 4,5 ou 6 colunas!')
+        reject('O jogo não está em 4 ou 5 colunas!')
       }
         
       resolve(finalNumbers)
@@ -94,7 +94,7 @@ class Raffle {
     let result = false
     quadrants.forEach(quadrant => {
       const intersections = finalNumbers.filter(f => quadrant.indexOf(f) !== -1)
-      if (intersections.length >= 4) {
+      if (intersections.length >= 3) {
         result = true
         return
       }
@@ -123,7 +123,7 @@ class Raffle {
         count++
       }
     })
-    if (count === 4 || count === 5 || count === 6) {
+    if (count === 4 || count === 5) {
       result = false
     }
     return result
